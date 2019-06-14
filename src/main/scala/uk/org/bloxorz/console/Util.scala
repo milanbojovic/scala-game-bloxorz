@@ -12,7 +12,8 @@ object Util {
     for(el <- m) (println(el._1 + ". " + el._2))
   }
 
-  def clearScreen() = {
-    //print("\033[2J")
+  def printMap(map: Array[Array[Char]]): Unit = {
+    println("Printing map")
+    for(row <- map) {for (el <- row) print(el); println()}
   }
 }
