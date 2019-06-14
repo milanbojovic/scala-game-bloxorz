@@ -1,8 +1,11 @@
 package uk.org.bloxorz
 
-object Game {
+import com.typesafe.scalalogging.LazyLogging
+
+object Game extends LazyLogging{
   def main(args: Array[String]): Unit = {
-    println("Program started:")
+
+    logger.debug("Bloxorz game started.")
 
 /*    clearScreen()
     Thread.sleep(1000)
@@ -11,9 +14,9 @@ object Game {
 
     Thread.sleep(2000)*/
 
-    uk.org.bloxorz.io.ExternalWorld.loadMap("input_map.txt")
+    uk.org.bloxorz.io.ExternalWorld.loadMap("/home/milanbojovic/IdeaProjects/GameBloxorz/src/main/resources/input_map.txt")
 
 
-    println("Program finished")
+    logger.debug("Bloxorz game completed.")
   }
 }
