@@ -14,9 +14,8 @@ object Game extends LazyLogging{
 
     Thread.sleep(2000)*/
 
-    uk.org.bloxorz.io.ExternalWorld.loadMap("/home/milanbojovic/IdeaProjects/GameBloxorz/src/main/resources/input_map.txt")
+    uk.org.bloxorz.io.ExternalWorld.loadMap("src/main/resources/input_map.txt")
 
-
-    logger.debug("Bloxorz game completed.")
+    logger.debug("Bloxorz game finished.")
   }
 }

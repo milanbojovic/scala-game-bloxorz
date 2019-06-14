@@ -3,16 +3,20 @@ package uk.org.bloxorz.io
 import scala.io.Source
 import java.io.{FileNotFoundException, IOException}
 
-object ExternalWorld {
+import com.typesafe.scalalogging.LazyLogging
+
+object ExternalWorld extends LazyLogging {
 
   def loadMap(filename: String): Unit = {
     try {
-      for (line <- Source.fromFile(filename).getLines) {
+      val src = Source.fromFile(filename)
+      for (line <- src.getLines) {
         println(line)
       }
+      src.close()
     } catch {
-      case e: FileNotFoundException => println("Couldn't find that file.")
-      case e: IOException => println("Got an IOException!")
+      case e: FileNotFoundException => logger.error("Couldn't find " + filename + " file.")
+      case e: IOException => logger.error("Got an IOException while loadingMap from file! [" + filename + "]")
     }
   }
 }
