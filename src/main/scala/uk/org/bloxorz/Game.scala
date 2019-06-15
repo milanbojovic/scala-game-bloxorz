@@ -4,6 +4,11 @@ import com.typesafe.scalalogging.LazyLogging
 
 object Game extends LazyLogging{
 
+  def cls() {
+    print("\u001b[2J")
+  }
+
+
   def main(args: Array[String]): Unit = {
 
     logger.debug("Bloxorz game started.")
@@ -18,6 +23,11 @@ object Game extends LazyLogging{
 
     console.Util.printMap(map)
 
+    Thread.sleep(1000)
+
+    cls()
+
+    Thread.sleep(1000)
 
     logger.debug("Bloxorz game finished.")
   }
