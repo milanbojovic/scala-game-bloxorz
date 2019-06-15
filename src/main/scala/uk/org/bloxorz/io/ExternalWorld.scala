@@ -1,13 +1,15 @@
 package uk.org.bloxorz.io
 
-import scala.io.{BufferedSource, Source}
 import java.io.{FileNotFoundException, IOException}
 
 import com.typesafe.scalalogging.LazyLogging
 
+import scala.io.{BufferedSource, Source}
+
 object ExternalWorld extends LazyLogging {
 
   def loadMap(filename: String): Array[Array[Char]] = {
+
     try {
       Source.fromFile(filename).getLines().toArray[String].map(_.toUpperCase().toArray)
     } catch {

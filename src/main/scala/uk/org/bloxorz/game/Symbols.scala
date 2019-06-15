@@ -6,4 +6,5 @@ object Symbols extends {
   val PanelStart   = 'S'
   val PanelFinish  = 'T'
   val PanelEmpty   = '-'
+  val Block        = '#'
 }
