@@ -9,11 +9,6 @@ object Util {
       3 -> "Move single",
       4 -> "Move sequence"
     )
-    for(el <- m) (println(el._1 + ". " + el._2))
-  }
-
-  def printMap(map: Array[Array[Char]]): Unit = {
-    println("Printing map")
-    for(row <- map) {for (el <- row) print(el); println()}
+    for(el <- m) println(el._1 + ". " + el._2)
   }
 }

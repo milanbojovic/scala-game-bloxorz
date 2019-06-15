@@ -1,6 +1,7 @@
 package uk.org.bloxorz
 
 import com.typesafe.scalalogging.LazyLogging
+import uk.org.bloxorz.game.GameMap
 
 object Game extends LazyLogging{
 
@@ -8,26 +9,13 @@ object Game extends LazyLogging{
     print("\u001b[2J")
   }
 
-
   def main(args: Array[String]): Unit = {
+    //console.Util.displayMenu()
 
     logger.debug("Bloxorz game started.")
 
-    Thread.sleep(1000)
-
-    console.Util.displayMenu()
-
-    Thread.sleep(2000)
-
-    var map = uk.org.bloxorz.io.ExternalWorld.loadMap("src/main/resources/input_map.txt")
-
-    console.Util.printMap(map)
-
-    Thread.sleep(1000)
-
-    cls()
-
-    Thread.sleep(1000)
+    var gameMap = new GameMap(uk.org.bloxorz.io.ExternalWorld.loadMap("src/main/resources/input_map.txt"))
+    println(gameMap)
 
     logger.debug("Bloxorz game finished.")
   }
