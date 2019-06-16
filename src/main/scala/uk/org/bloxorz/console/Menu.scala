@@ -10,8 +10,9 @@ class Menu extends LazyLogging {
       1 -> "Load map",
       2 -> "New interactive game",
       3 -> "New automatic game",
+      4 -> "Move sequence",
       5 -> "Move single",
-      4 -> "Move sequence"
+      6 -> "Exit"
     )
 
   def changeSelection(direction: Direction.Value): Unit = direction match {

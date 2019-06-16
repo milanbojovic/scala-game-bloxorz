@@ -1,7 +1,9 @@
 package uk.org.bloxorz.game
 
+import java.io.IOException
+
 import com.typesafe.scalalogging.LazyLogging
-import org.jline.terminal.TerminalBuilder
+import org.jline.terminal.{Terminal, TerminalBuilder}
 import uk.org.bloxorz.console.Menu
 import uk.org.bloxorz.io.FileSystem
 
@@ -25,6 +27,13 @@ class Game(var matrix: Array[Array[Char]]) extends LazyLogging {
     menu.cls()
     println(this)
     validatePosition(block)
+  }
+
+  def checkGameStatus(block: Block, validPosition: Boolean): Boolean = {
+    if (block.orientation == Orientation.Vertical && validPosition) {
+      logger.debug(s"GameStatus: ${block.bricks.head.i == finish.i && block.bricks.head.j == finish.j}.")
+      block.bricks.head == finish
+    } else false
   }
 
   def validatePosition(block: Block): Boolean = block.orientation match {
@@ -62,37 +71,49 @@ class Game(var matrix: Array[Array[Char]]) extends LazyLogging {
     findHelper(0)
   }
 
-  def playInteractive(): Unit = {
-    val terminal = TerminalBuilder.builder().jna(true).system(true).build()
-    terminal.enterRawMode()
+  def playInteractive(terminal: Terminal): Unit = {
+    /*val terminal = TerminalBuilder.builder().jna(true).system(true).build()
+    terminal.enterRawMode()*/
 
     val reader = terminal.reader()
     var input = -1
-    var run = true
+    var gameRunning = true
+    var gameStatus = false
 
     logger.debug("Game started in interactive mode.")
     println(this)
     Thread.sleep(1500)
 
-    while (input != 81 && input != 113 && run) {
-      input = reader.read()
-      input match {
-        case 68 =>
-          run = this.moveBlock(Direction.LEFT)
-        case 67 =>
-          run = this.moveBlock(Direction.RIGHT)
-        case 65 =>
-          run = this.moveBlock(Direction.UP)
-        case 66 =>
-          run = this.moveBlock(Direction.DOWN)
-        case unknown =>
-          println(s"you pressed a unsupported key $unknown")
+    try {
+      while (gameRunning && input != 81 && input != 113) {
+        input = reader.read()
+        input match {
+          case 68 =>
+            gameRunning = this.moveBlock(Direction.LEFT)
+            gameStatus = checkGameStatus(this.block, gameRunning)
+          case 67 =>
+            gameRunning = this.moveBlock(Direction.RIGHT)
+            gameStatus = checkGameStatus(this.block, gameRunning)
+          case 65 =>
+            gameRunning = this.moveBlock(Direction.UP)
+            gameStatus = checkGameStatus(this.block, gameRunning)
+          case 66 =>
+            gameRunning = this.moveBlock(Direction.DOWN)
+            gameStatus = checkGameStatus(this.block, gameRunning)
+          case unknown =>
+            logger.debug(s"you pressed a unsupported key $unknown")
+        }
+      }
+      if(gameStatus) println("You won.") else println("You lost.")
+      logger.debug(s"Interactive game finished. Game exit status: ${gameStatus}")
+    } finally {
+      try {
+  /*      reader.close();
+        terminal.close();*/
+      } catch {
+        case e: IOException  => logger.debug("ERROR\n"  + e.toString)
       }
     }
-    terminal.close()
-    reader.close()
-
-    logger.debug("Interactive game finished.")
   }
 
   def playAutomatic(fileName: String): Unit = {
