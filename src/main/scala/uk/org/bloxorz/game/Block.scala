@@ -23,9 +23,9 @@ class Block(var orientation: Orientation.Value, var bricks: List[Index]) {
     }
   }
 
-  def calculateChunkIndexList(dir: Direction.Value): List[Index] = orientation match {
+  def calcBricksList(dir: Direction.Value): List[Index] = orientation match {
     case Orientation.Vertical   => dir match {
-      case _ =>  calcNewIndex(bricks.head, dir) :: bricks.head :: Nil
+      case _ =>  calcNewIndex(calcNewIndex(bricks.head, dir), dir) :: calcNewIndex(bricks.head, dir) ::  Nil
     }
     case Orientation.EastWest   => dir match {
       case Direction.UP   | Direction.DOWN    =>  calcNewIndex(bricks.head, dir) :: calcNewIndex(bricks.tail.head, dir) :: Nil
