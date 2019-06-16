@@ -66,4 +66,8 @@ class Block(var orientation: Orientation.Value, var bricks: List[Index]) {
     if (list.head.i < list.tail.head.i) list.tail.head
     else list.head
   }
+
+  override def toString: String = {
+    "Orientation: ".concat(orientation.toString).concat(", Bricks: ").concat(bricks.mkString("[", ",", "]")).toString()
+  }
 }

@@ -11,4 +11,8 @@ object Util {
     )
     for(el <- m) println(el._1 + ". " + el._2)
   }
+
+  def cls() {
+    print("\u001b[2J")
+  }
 }
