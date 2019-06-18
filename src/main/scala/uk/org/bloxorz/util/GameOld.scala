@@ -1,3 +1,4 @@
+/*
 package uk.org.bloxorz.game
 
 import java.io.IOException
@@ -5,70 +6,48 @@ import java.io.IOException
 import com.typesafe.scalalogging.LazyLogging
 import org.jline.terminal.{Terminal, TerminalBuilder}
 import uk.org.bloxorz.console.Menu
+import uk.org.bloxorz.game.map.blocks.Point
 import uk.org.bloxorz.io.FileSystem
 
-class Game(var matrix: Array[Array[Char]]) extends LazyLogging {
+object GameOld {
 
-  val start: Index = findIndexOf(matrix, Symbols.PanelStart)
-  val finish: Index = findIndexOf(matrix, Symbols.PanelFinish)
-  var block = new Block(Orientation.Vertical, start :: Nil)
+}
+class GameOld(var matrix: Vector[Vector[Char]]) extends LazyLogging {
+
+  //val start: Point = Game.findPointCoordinatesOf(matrix, Symbols.PanelStart)
+  //val finish: Point = Game.findPointCoordinatesOf(matrix, Symbols.PanelFinish)
+  //var block = new Block(Orientation.Vertical, start :: Nil)
+  //val emptyBlock = new Block(Orientation.Vertical, Nil)
   var menu = new Menu
 
   val WaitTimeout: Int = 2 * 1000
 
-  def setBlock(matrix: Array[Array[Char]], blk: Block): Unit = {
-    block = blk
+  //logger.debug(s"findSolutions for block: ${block}")
+  def findSolution(): List[Block] = {
+    def findSol(curr: Block, prev: Block, posibblePos: Set[Block], pathList: List[Block]): List[Block] = {
+      if(isFinalPosition(matrix, curr) || posibblePos.isEmpty) pathList
+      else {
+        var possFiltered = curr.findPossiblePositions(matrix) - prev ++ posibblePos.tail
+        logger.debug(s"         Possible positions for block: ${curr} => ${possFiltered.mkString(" *** ")}")
+        findSol(possFiltered.toList.head, curr, possFiltered, curr :: pathList)
+      }
+    }
+    findSol(block, emptyBlock, block.findPossiblePositions(matrix), Nil)
   }
 
-  def moveBlock(dir: Direction.Value): Boolean = {
-    val newBlock: Block = new Block(block.changeOrientation(dir), block.calcBricksList(dir))
-    logger.debug("Moving block: " + block + " ==> " + newBlock)
-    setBlock(matrix, newBlock)
-    menu.cls()
-    println(this)
-    validatePosition(block)
+  def isFinalPosition(matrix: Array[Array[Char]], block: Block): Boolean = {
+    (new Block(Orientation.Vertical, GameOld.findPointCoordinatesOf(matrix, Symbols.PanelFinish) :: Nil)) == block
   }
 
-  def checkGameStatus(block: Block, validPosition: Boolean): Boolean = {
+  def checkGameStatus(block: Block, validPosition: Boolean): Boolean = { //!!!!!!!!!!!!!!!!!!
     if (block.orientation == Orientation.Vertical && validPosition) {
       logger.debug(s"GameStatus: ${block.bricks.head.i == finish.i && block.bricks.head.j == finish.j}.")
       block.bricks.head == finish
     } else false
   }
 
-  def validatePosition(block: Block): Boolean = block.orientation match {
-    case Orientation.Vertical => {
-      logger.debug("Validate block:")
-      valiadteBrick(block.bricks.head, block.orientation)
-    }
-    case _                    => {
-      logger.debug("Validate block:")
-      valiadteBrick(block.bricks.head, block.orientation) && valiadteBrick(block.bricks.tail.head, block.orientation)
-    }
-  }
-
-  def valiadteBrick(brick: Index, orientation: Orientation.Value): Boolean = orientation match {
-    case Orientation.Vertical =>  {
-      logger.debug(s"     ValidateBrick: ${brick}, ${orientation}, matrix${brick}=${matrix(brick.i)(brick.j)} - status => ${matrix(brick.i)(brick.j) != Symbols.PanelEmpty && matrix(brick.i)(brick.j) != Symbols.PanelSpecial}")
-      matrix(brick.i)(brick.j) != Symbols.PanelEmpty && matrix(brick.i)(brick.j) != Symbols.PanelSpecial;
-    }
-    case _                    =>  {
-      logger.debug(s"     ValidateBrick: ${brick}, ${orientation}, matrix${brick}=${matrix(brick.i)(brick.j)} - status => ${matrix(brick.i)(brick.j) != Symbols.PanelEmpty}")
-      matrix(brick.i)(brick.j) != Symbols.PanelEmpty
-    }
-  }
-
-  private def setValueAtIndex(matrix: Array[Array[Char]], ind: Index, value: Char): Unit = {
+  private def setValueAtIndex(matrix: Array[Array[Char]], ind: Point, value: Char): Unit = {
     matrix(ind.i)(ind.j) = value
-  }
-
-  def findIndexOf(matrix: Array[Array[Char]], c: Char): Index = {
-    def findHelper(i: Int): Index = {
-      if (i == matrix.length) new Index(-1, -1)
-      else if (matrix(i).indexOf(c.toUpper) >= 0) new Index(i, matrix(i).indexOf(c.toUpper))
-      else findHelper(i + 1)
-    }
-    findHelper(0)
   }
 
   def playInteractive(terminal: Terminal): Unit = {
@@ -154,3 +133,4 @@ class Game(var matrix: Array[Array[Char]]) extends LazyLogging {
     tmpMatrix.map(_.mkString).mkString("\n")
   }
 }
+*/

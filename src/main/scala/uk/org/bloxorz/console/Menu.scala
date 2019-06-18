@@ -1,7 +1,7 @@
 package uk.org.bloxorz.console
 
 import com.typesafe.scalalogging.LazyLogging
-import uk.org.bloxorz.game.Direction
+import uk.org.bloxorz.game.map.blocks.Direction
 
 class Menu extends LazyLogging {
     var menuSelection: Int = 1;
@@ -10,8 +10,7 @@ class Menu extends LazyLogging {
       1 -> "Load map",
       2 -> "New interactive game",
       3 -> "New automatic game",
-      4 -> "Move sequence",
-      5 -> "Move single",
+      4 -> "Find solution sequence",
       6 -> "Exit"
     )
 

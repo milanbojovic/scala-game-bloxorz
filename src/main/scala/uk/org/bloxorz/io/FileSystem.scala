@@ -8,13 +8,13 @@ import scala.io.Source
 
 object FileSystem extends LazyLogging {
 
-  def loadMap(filename: String): Array[Array[Char]] = {
-
+  def loadMap(filename: String): Vector[Vector[Char]] = {
     try {
-      Source.fromFile(filename).getLines().toArray[String].map(_.toUpperCase().toArray)
+      logger.debug(s"Loading map from file + ${filename}")
+      Source.fromFile(filename).getLines().toVector.map(_.trim.toVector)
     } catch {
-      case e: FileNotFoundException => logger.error(s"Couldn't find file [${filename}]."); Array[Array[Char]]();
-      case e: IOException => logger.error(s"Got an IOException while loadingMap from file! [${filename}]"); Array[Array[Char]]()
+      case e: FileNotFoundException => logger.error(s"Couldn't find file [${filename}]."); Vector[Vector[Char]]();
+      case e: IOException => logger.error(s"Got an IOException while loadingMap from file! [${filename}]"); Vector[Vector[Char]]()
     }
   }
 
@@ -26,9 +26,10 @@ object FileSystem extends LazyLogging {
     case _ => throw new IOException(s"Invalid value detected while reading file. [${move.trim}]")
 
   }
-  def loadMoves(filename: String): List[String] = {
 
+  def loadMoves(filename: String): List[String] = {
     try {
+      logger.debug(s"sLoading moves from file + ${filename}")
       Source.fromFile(filename).getLines().toList.iterator.map(encodeMove(_)).toList
     } catch {
       case e: FileNotFoundException => logger.error(s"Couldn't find file [${filename}]."); List[String]();

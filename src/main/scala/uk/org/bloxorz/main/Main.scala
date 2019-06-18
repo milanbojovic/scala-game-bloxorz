@@ -1,26 +1,26 @@
-package uk.org.bloxorz
-
-import java.io.IOException
+package uk.org.bloxorz.main
 
 import com.typesafe.scalalogging.LazyLogging
-import org.jline.terminal.TerminalBuilder
-import uk.org.bloxorz.game.{Direction, Game}
+import uk.org.bloxorz.game.game.HumanDrivenGame
 
 object Main extends LazyLogging {
 
   def main(args: Array[String]): Unit = {
     logger.info("Program GameBloxorz started")
 
-    var game = new Game(uk.org.bloxorz.io.FileSystem.loadMap("src/main/resources/input_map.txt"))
+    var game = new HumanDrivenGame("src/main/resources/input_map.txt")
 
-    val terminal = TerminalBuilder.builder().jna(true).system(true).build()
+
+/*    val terminal = TerminalBuilder.builder().jna(true).system(true).build()
     terminal.enterRawMode()
 
     val reader = terminal.reader()
     var input = -1
-    var run = true
+    var run = true*/
 
-    try {
+    //game.findSolution()
+
+   /* try {
       while (run) {
         var charArr: Array[Char] = Array[Char]()
         game.menu.cls()
@@ -31,6 +31,7 @@ object Main extends LazyLogging {
             case 13 | 101 => game.menu.menuSelection match {
               case 2 => game.playInteractive(terminal)
               case 3 => game.playAutomatic("src/main/resources/moves_sequence.txt")
+              case 4 => logger.debug(game.findSolution().mkString("=========>") + "*********************" )
               case 6 => run = false;
               case _ => logger.debug("Unknowg menu selection item !!!")
             }
@@ -52,7 +53,6 @@ object Main extends LazyLogging {
       } catch {
         case e: IOException  => logger.debug("ERROOOOOORRRRR" + e.toString)
       }
-    }
+    }*/
   }
 }
-

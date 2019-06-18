@@ -1,0 +1,145 @@
+package uk.org.bloxorz.game.map.blocks
+
+import com.typesafe.scalalogging.LazyLogging
+
+class Block(var orientation: Orientation.Value, var bricks: List[Point]) extends LazyLogging {
+
+
+/*  def setBlock(matrix: Array[Array[Char]], blk: Block): Unit = {
+    block = blk
+  }*/
+
+/*
+  def moveBlock(dir: Direction.Value): Boolean = {
+    val newBlock: Block = new Block(calcOrientation(dir), calcBricksList(dir))
+    //logger.debug("Moving block: " + block + " ==> " + newBlock)
+    setBlock(matrix, newBlock)
+    menu.cls()
+    block.validatePosition(matrix, block)
+  }
+*/
+
+
+ /*
+  def findPossiblePositions(matrix: Array[Array[Char]]): Set[Block] = {
+    //logger.debug(s"Possible solutions")
+    var result = allPositions.filter(this.validatePosition(matrix,_))
+    //logger.debug(s"         Possible positions for block: ${this} => ${result.mkString(" *** ")}")
+    result
+  }
+
+  private def allPositions(): Set[Block] = {
+    var res: Set[Block] = Set()
+    for (direction <- Direction.values) res = res + new Block(calcOrientation(direction), calcBricksList(direction))
+    res
+  }
+
+  def validatePosition(matrix: Array[Array[Char]], block: Block): Boolean = block.orientation match {
+    case Orientation.Vertical => {
+      //logger.debug("Validate block:")
+      valiadteBrick(matrix, block.bricks.head, block.orientation)
+    }
+    case _                    => {
+      //logger.debug("Validate block:")
+      valiadteBrick(matrix, block.bricks.head, block.orientation) && valiadteBrick(matrix, block.bricks.tail.head, block.orientation)
+    }
+  }
+
+  private def valiadteBrick(matrix: Array[Array[Char]], point: Point, orientation: Orientation.Value): Boolean = {
+    val innerMatch = orientation match {
+      case Orientation.Vertical =>  {
+        logger.debug(s"     Validate point: ${point},")
+        matrix(point.i)(point.j) != Symbols.PanelEmpty && matrix(point.i)(point.j) != Symbols.PanelSpecial;
+      }
+      case _                    =>  {
+        //logger.debug(s"     ValidateBrick: ${brick}, ${orientation}, matrix${brick}=${matrix(brick.i)(brick.j)} - status => ${matrix(brick.i)(brick.j) != Symbols.PanelEmpty}")
+        matrix(point.i)(point.j) != Symbols.PanelEmpty
+      }
+    }
+    if (point.isValid(matrix)) innerMatch else false
+  }*/
+
+  private def calcOrientation(dir: Direction.Value): Orientation.Value = orientation match {
+    case Orientation.Vertical   => dir match {
+      case Direction.UP     =>  Orientation.NorthSouth
+      case Direction.DOWN   =>  Orientation.NorthSouth
+      case Direction.LEFT   =>  Orientation.EastWest
+      case Direction.RIGHT  =>  Orientation.EastWest
+    }
+    case Orientation.EastWest   => dir match {
+      case Direction.UP     =>  Orientation.EastWest
+      case Direction.DOWN   =>  Orientation.EastWest
+      case Direction.LEFT   =>  Orientation.Vertical
+      case Direction.RIGHT  =>  Orientation.Vertical
+    }
+    case Orientation.NorthSouth => dir match {
+      case Direction.UP     =>  Orientation.Vertical
+      case Direction.DOWN   =>  Orientation.Vertical
+      case Direction.LEFT   =>  Orientation.NorthSouth
+      case Direction.RIGHT  =>  Orientation.NorthSouth
+    }
+  }
+
+  private def calcBricksList(dir: Direction.Value): List[Point] = orientation match {
+    case Orientation.Vertical   => dir match {
+      case _ =>  calcNewIndex(calcNewIndex(bricks.head, dir), dir) :: calcNewIndex(bricks.head, dir) ::  Nil
+    }
+    case Orientation.EastWest   => dir match {
+      case Direction.UP   | Direction.DOWN    =>  calcNewIndex(bricks.head, dir) :: calcNewIndex(bricks.tail.head, dir) :: Nil
+      case Direction.LEFT                     =>  calcNewIndex(findLeftIndex(bricks), dir) :: Nil
+      case Direction.RIGHT                    =>  calcNewIndex(findRightIndex(bricks), dir) :: Nil
+
+    }
+    case Orientation.NorthSouth => dir match {
+      case Direction.LEFT | Direction.RIGHT   =>  calcNewIndex(bricks.head, dir) :: calcNewIndex(bricks.tail.head, dir) :: Nil
+      case Direction.UP                         =>  calcNewIndex(findTopIndex(bricks), dir) :: Nil
+      case Direction.DOWN                       =>  calcNewIndex(findBottomIndex(bricks), dir) :: Nil
+    }
+  }
+
+  private def calcNewIndex(ind: Point, direction: Direction.Value): Point =  direction match {
+    case Direction.UP     =>  new Point(ind.i - 1, ind.j)
+    case Direction.DOWN   =>  new Point(ind.i + 1, ind.j)
+    case Direction.LEFT   =>  new Point(ind.i, ind.j - 1)
+    case Direction.RIGHT  =>  new Point(ind.i, ind.j + 1)
+  }
+
+  private def findLeftIndex(list: List[Point]) : Point = {
+    if (list.head.j < list.tail.head.j) list.head
+    else list.tail.head
+  }
+
+  private def findRightIndex(list: List[Point]) : Point = {
+    if (list.head.j < list.tail.head.j) list.tail.head
+    else list.head
+  }
+
+  private def findTopIndex(list: List[Point]) : Point = {
+    if (list.head.i < list.tail.head.i) list.head
+    else list.tail.head
+  }
+
+  private def findBottomIndex(list: List[Point]) : Point = {
+    if (list.head.i < list.tail.head.i) list.tail.head
+    else list.head
+  }
+
+  def canEqual(a: Any): Boolean = a.isInstanceOf[Block]
+
+  override def equals(blk: Any): Boolean = blk match {
+    case blk: Block =>  blk.canEqual(this)  && this.hashCode == blk.hashCode
+    case _ => false
+  }
+
+  override def hashCode:Int = {
+    val prime = 31
+    var result = 1
+    result = prime * result + orientation.id
+    result = prime * result + bricks.foldLeft(0)(_.hashCode() + _.hashCode)
+    result
+  }
+
+  override def toString: String = {
+    s"sBLK {${orientation.toString}, Bricks: ${bricks.reverse.mkString("[", ",", "]}")}"
+  }
+}

@@ -1,6 +1,6 @@
-package uk.org.bloxorz.game
+package uk.org.bloxorz.util
 
-object Symbols extends {
+object Symbols {
   val PanelBasic   = 'O'
   val PanelSpecial = '.'
   val PanelStart   = 'S'
