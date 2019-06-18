@@ -8,6 +8,8 @@ abstract class Game(fileName: String) {
 
   var board: Board = initializeBoard
 
-  def play(): Boolean;
+  def play(): Int
+
+  override def toString: String = " game "
 
 }

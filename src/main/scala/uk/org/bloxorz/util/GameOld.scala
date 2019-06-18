@@ -14,13 +14,10 @@ object GameOld {
 }
 class GameOld(var matrix: Vector[Vector[Char]]) extends LazyLogging {
 
-  //val start: Point = Game.findPointCoordinatesOf(matrix, Symbols.PanelStart)
-  //val finish: Point = Game.findPointCoordinatesOf(matrix, Symbols.PanelFinish)
-  //var block = new Block(Orientation.Vertical, start :: Nil)
-  //val emptyBlock = new Block(Orientation.Vertical, Nil)
+
   var menu = new Menu
 
-  val WaitTimeout: Int = 2 * 1000
+
 
   //logger.debug(s"findSolutions for block: ${block}")
   def findSolution(): List[Block] = {
@@ -33,66 +30,6 @@ class GameOld(var matrix: Vector[Vector[Char]]) extends LazyLogging {
       }
     }
     findSol(block, emptyBlock, block.findPossiblePositions(matrix), Nil)
-  }
-
-  def isFinalPosition(matrix: Array[Array[Char]], block: Block): Boolean = {
-    (new Block(Orientation.Vertical, GameOld.findPointCoordinatesOf(matrix, Symbols.PanelFinish) :: Nil)) == block
-  }
-
-  def checkGameStatus(block: Block, validPosition: Boolean): Boolean = { //!!!!!!!!!!!!!!!!!!
-    if (block.orientation == Orientation.Vertical && validPosition) {
-      logger.debug(s"GameStatus: ${block.bricks.head.i == finish.i && block.bricks.head.j == finish.j}.")
-      block.bricks.head == finish
-    } else false
-  }
-
-  private def setValueAtIndex(matrix: Array[Array[Char]], ind: Point, value: Char): Unit = {
-    matrix(ind.i)(ind.j) = value
-  }
-
-  def playInteractive(terminal: Terminal): Unit = {
-    /*val terminal = TerminalBuilder.builder().jna(true).system(true).build()
-    terminal.enterRawMode()*/
-
-    val reader = terminal.reader()
-    var input = -1
-    var gameRunning = true
-    var gameStatus = false
-
-    logger.debug("Game started in interactive mode.")
-    println(this)
-    Thread.sleep(1500)
-
-    try {
-      while (gameRunning && input != 81 && input != 113) {
-        input = reader.read()
-        input match {
-          case 68 =>
-            gameRunning = this.moveBlock(Direction.LEFT)
-            gameStatus = checkGameStatus(this.block, gameRunning)
-          case 67 =>
-            gameRunning = this.moveBlock(Direction.RIGHT)
-            gameStatus = checkGameStatus(this.block, gameRunning)
-          case 65 =>
-            gameRunning = this.moveBlock(Direction.UP)
-            gameStatus = checkGameStatus(this.block, gameRunning)
-          case 66 =>
-            gameRunning = this.moveBlock(Direction.DOWN)
-            gameStatus = checkGameStatus(this.block, gameRunning)
-          case unknown =>
-            logger.debug(s"you pressed a unsupported key $unknown")
-        }
-      }
-      if(gameStatus) println("You won.") else println("You lost.")
-      logger.debug(s"Interactive game finished. Game exit status: ${gameStatus}")
-    } finally {
-      try {
-  /*      reader.close();
-        terminal.close();*/
-      } catch {
-        case e: IOException  => logger.debug("ERROR\n"  + e.toString)
-      }
-    }
   }
 
   def playAutomatic(fileName: String): Unit = {

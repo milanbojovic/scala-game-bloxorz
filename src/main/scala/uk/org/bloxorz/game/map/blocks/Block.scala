@@ -4,60 +4,9 @@ import com.typesafe.scalalogging.LazyLogging
 
 class Block(var orientation: Orientation.Value, var bricks: List[Point]) extends LazyLogging {
 
-
-/*  def setBlock(matrix: Array[Array[Char]], blk: Block): Unit = {
-    block = blk
-  }*/
-
-/*
-  def moveBlock(dir: Direction.Value): Boolean = {
-    val newBlock: Block = new Block(calcOrientation(dir), calcBricksList(dir))
-    //logger.debug("Moving block: " + block + " ==> " + newBlock)
-    setBlock(matrix, newBlock)
-    menu.cls()
-    block.validatePosition(matrix, block)
+  def moveBlock(dir: Direction.Value): Block = {
+    new Block(calcOrientation(dir), calcBricksList(dir))
   }
-*/
-
-
- /*
-  def findPossiblePositions(matrix: Array[Array[Char]]): Set[Block] = {
-    //logger.debug(s"Possible solutions")
-    var result = allPositions.filter(this.validatePosition(matrix,_))
-    //logger.debug(s"         Possible positions for block: ${this} => ${result.mkString(" *** ")}")
-    result
-  }
-
-  private def allPositions(): Set[Block] = {
-    var res: Set[Block] = Set()
-    for (direction <- Direction.values) res = res + new Block(calcOrientation(direction), calcBricksList(direction))
-    res
-  }
-
-  def validatePosition(matrix: Array[Array[Char]], block: Block): Boolean = block.orientation match {
-    case Orientation.Vertical => {
-      //logger.debug("Validate block:")
-      valiadteBrick(matrix, block.bricks.head, block.orientation)
-    }
-    case _                    => {
-      //logger.debug("Validate block:")
-      valiadteBrick(matrix, block.bricks.head, block.orientation) && valiadteBrick(matrix, block.bricks.tail.head, block.orientation)
-    }
-  }
-
-  private def valiadteBrick(matrix: Array[Array[Char]], point: Point, orientation: Orientation.Value): Boolean = {
-    val innerMatch = orientation match {
-      case Orientation.Vertical =>  {
-        logger.debug(s"     Validate point: ${point},")
-        matrix(point.i)(point.j) != Symbols.PanelEmpty && matrix(point.i)(point.j) != Symbols.PanelSpecial;
-      }
-      case _                    =>  {
-        //logger.debug(s"     ValidateBrick: ${brick}, ${orientation}, matrix${brick}=${matrix(brick.i)(brick.j)} - status => ${matrix(brick.i)(brick.j) != Symbols.PanelEmpty}")
-        matrix(point.i)(point.j) != Symbols.PanelEmpty
-      }
-    }
-    if (point.isValid(matrix)) innerMatch else false
-  }*/
 
   private def calcOrientation(dir: Direction.Value): Orientation.Value = orientation match {
     case Orientation.Vertical   => dir match {
@@ -140,6 +89,6 @@ class Block(var orientation: Orientation.Value, var bricks: List[Point]) extends
   }
 
   override def toString: String = {
-    s"sBLK {${orientation.toString}, Bricks: ${bricks.reverse.mkString("[", ",", "]}")}"
+    s"BLK {${orientation.toString}, Bricks: ${bricks.reverse.mkString("[", ",", "]}")}"
   }
 }

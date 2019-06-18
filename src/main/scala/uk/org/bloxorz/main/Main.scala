@@ -9,7 +9,7 @@ object Main extends LazyLogging {
     logger.info("Program GameBloxorz started")
 
     var game = new HumanDrivenGame("src/main/resources/input_map.txt")
-
+    game.play()
 
 /*    val terminal = TerminalBuilder.builder().jna(true).system(true).build()
     terminal.enterRawMode()

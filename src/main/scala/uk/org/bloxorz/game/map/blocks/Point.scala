@@ -1,6 +1,12 @@
 package uk.org.bloxorz.game.map.blocks
 
 class Point(val i: Int, val j: Int) {
+
+  def isValid(d: (Int, Int)): Boolean = {
+    i >= 0 && i < d._1 && j >= 0 && j < d._2
+  }
+
+
   def canEqual(a: Any) = a.isInstanceOf[Point]
 
   override def equals(ind: Any): Boolean = ind match {

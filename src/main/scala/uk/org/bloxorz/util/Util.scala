@@ -12,6 +12,11 @@ object Util {
       case Symbols.PanelStart   => new Start(p)
       case Symbols.PanelFinish  => new End(p)
       case Symbols.PanelEmpty   => new Empty(p)
+      case Symbols.Block        => new Blockk(p)
       case _ => throw new IOException(s"Invalid value detected while reading file. Point${p}, value: ${p}")
+    }
+
+    def cls(): Unit = {
+      print("\u001b[2J")
     }
 }
