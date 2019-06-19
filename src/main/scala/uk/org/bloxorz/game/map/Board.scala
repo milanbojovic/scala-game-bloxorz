@@ -41,7 +41,7 @@ class Board(rawMatrix: Vector[Vector[Char]]) extends LazyLogging {
     if(valiadteBlock(newBlock)) {
       logger.debug("Moving block: " + block + " ==> " + newBlock)
       block = newBlock
-      (true, valiadteGameStatus(newBlock))
+      (!valiadteGameStatus(newBlock), valiadteGameStatus(newBlock))
     } else (false, false)
   }
 
@@ -50,12 +50,15 @@ class Board(rawMatrix: Vector[Vector[Char]]) extends LazyLogging {
     Vector.tabulate(sizeM,sizeN){ (i,j) => Util.charToField(vectorMatrix(i)(j), new Point(i,j))}
   }
 
-  def valiadteGameStatus(block: Block): Boolean = block.orientation == Orientation.Vertical && block.bricks.head == endField.point
+  def valiadteGameStatus(block: Block): Boolean = {
+    logger.debug(s"Validate game status: Block current $block, end field coordinates: ${endField.point}")
+    block.orientation == Orientation.Vertical && block.bricks.head == endField.point
+  }
 
   private def valiadteBlock(b: Block): Boolean = {
     val innerMatch = b.orientation match {
       case Orientation.Vertical => !getField(b.bricks.head).isInstanceOf[Empty] && !getField(b.bricks.head).isInstanceOf[Special]
-      case _                    => !b.bricks.forall(getField(_).isInstanceOf[Empty])
+      case _                    => !b.bricks.exists(getField(_).isInstanceOf[Empty])
     }
     logger.debug(s"     Validating b: $b,")
     if (b.bricks.forall(_.isValid((sizeM,sizeN)))) innerMatch else false
