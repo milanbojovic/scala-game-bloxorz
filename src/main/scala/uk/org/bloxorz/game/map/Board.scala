@@ -3,7 +3,7 @@ package uk.org.bloxorz.game.map
 import com.typesafe.scalalogging.LazyLogging
 import uk.org.bloxorz.game.map.blocks.{Block, Direction, Orientation, Point}
 import uk.org.bloxorz.game.map.fields._
-import uk.org.bloxorz.util.{Symbols, Util}
+import uk.org.bloxorz.util.Util
 
 class Board(rawMatrix: Vector[Vector[Char]]) extends LazyLogging {
   logger.debug("Checking constraints and initializing board")
@@ -25,8 +25,6 @@ class Board(rawMatrix: Vector[Vector[Char]]) extends LazyLogging {
   require(findStartFields.size == 1, "Map must have one \"START\" field !!!")
   require(findEndFields.size == 1, "Map must have one \"END\" field !!!")
   require(findBasicFields.nonEmpty, "Map must have at least one \"BASIC\" field")
-
-
 
   // Matrix start, end fields
   val startField  : Start   = findStartFields.head.asInstanceOf[Start]
@@ -53,6 +51,12 @@ class Board(rawMatrix: Vector[Vector[Char]]) extends LazyLogging {
   def valiadteGameStatus(block: Block): Boolean = {
     logger.debug(s"Validate game status: Block current $block, end field coordinates: ${endField.point}")
     block.orientation == Orientation.Vertical && block.bricks.head == endField.point
+  }
+
+  def findPossiblePositions(b: Block): Set[Block] = {
+    val result = b.allPositions.filter(valiadteBlock(_))
+    logger.debug(s"         Possible positions for block: ${this} => ${result.mkString(" *** ")}")
+    result
   }
 
   private def valiadteBlock(b: Block): Boolean = {

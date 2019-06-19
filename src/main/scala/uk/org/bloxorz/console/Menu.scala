@@ -4,9 +4,9 @@ import com.typesafe.scalalogging.LazyLogging
 import uk.org.bloxorz.game.map.blocks.Direction
 
 class Menu extends LazyLogging {
-    var menuSelection: Int = 1;
+    var menuSelection: Int = 1
 
-    val menuItems = Map(
+    val menuItems: Map[Int, String] = Map(
       1 -> "Load map",
       2 -> "New interactive game",
       3 -> "New automatic game",
@@ -16,12 +16,12 @@ class Menu extends LazyLogging {
 
   def changeSelection(direction: Direction.Value): Unit = direction match {
       case Direction.DOWN => if (menuSelection < menuItems.keys.size) {
-        logger.debug(s"Change selection event - selection ${menuSelection}, direction ${direction}}")
+        logger.debug(s"Change selection event - selection $menuSelection, direction $direction")
         menuSelection = menuSelection + 1
       }
       case Direction.UP => if (menuSelection > 1) {
-        logger.debug(s"Change selection event - selection ${menuSelection}, direction ${direction}}")
-        menuSelection = menuSelection - 1;
+        logger.debug(s"Change selection event - selection $menuSelection, direction $direction")
+        menuSelection = menuSelection - 1
       }
   }
 
