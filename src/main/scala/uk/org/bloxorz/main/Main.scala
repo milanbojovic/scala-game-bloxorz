@@ -1,14 +1,15 @@
 package uk.org.bloxorz.main
 
 import com.typesafe.scalalogging.LazyLogging
-import uk.org.bloxorz.game.game.HumanDrivenGame
+import uk.org.bloxorz.game.game.{FileDrivenGame, HumanDrivenGame}
 
 object Main extends LazyLogging {
 
   def main(args: Array[String]): Unit = {
     logger.info("Program GameBloxorz started")
 
-    var game = new HumanDrivenGame("src/main/resources/input_map.txt")
+    //var game = new HumanDrivenGame("src/main/resources/input_map.txt")
+    var game = new FileDrivenGame("src/main/resources/input_map.txt", "src/main/resources/moves_sequence.txt")
     game.play()
 
 /*    val terminal = TerminalBuilder.builder().jna(true).system(true).build()
