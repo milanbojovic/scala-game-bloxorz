@@ -15,9 +15,10 @@ object Main extends LazyLogging {
     logger.info("Program Bloxorz started")
 
     val menu = new Menu
+
     val humenDriven = new HumanDrivenGame("src/main/resources/input_map.txt")
-    val fileDriven  = new FileDrivenGame("src/main/resources/input_map.txt", "src/main/resources/moves_sequence.txt")
-    val aiDriven = new AIDrivenGame("src/main/resources/input_map.txt")
+    val fileDriven  = new FileDrivenGame("src/main/resources/input_map.txt", "src/main/resources/input_moves_sequence.txt")
+    val aiDriven = new AIDrivenGame("src/main/resources/input_map.txt", "src/main/resources/output_moves_sequence.txt")
 
     val terminal = TerminalBuilder.builder().jna(true).system(true).build()
     terminal.enterRawMode()

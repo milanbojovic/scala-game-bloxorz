@@ -5,9 +5,9 @@ import com.typesafe.scalalogging.LazyLogging
 class Block(var orientation: Orientation.Value, var bricks: List[Point]) extends LazyLogging {
 
   def allPositions(): Set[Block] = {
-      var res: Set[Block] = Set()
-      for (direction <- Direction.values) res = res + new Block(calcOrientation(direction), calcBricksList(direction))
-      res
+    var res: Set[Block] = Set()
+    for (direction <- Direction.values) res = res + new Block(calcOrientation(direction), calcBricksList(direction))
+    res
   }
 
   def moveBlock(dir: Direction.Value): Block = {

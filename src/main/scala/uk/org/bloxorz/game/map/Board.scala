@@ -9,7 +9,7 @@ class Board(rawMatrix: Vector[Vector[Char]]) extends LazyLogging {
   logger.debug("Checking constraints and initializing board")
 
   // Requirements 1
-  require(rawMatrix.nonEmpty && rawMatrix(0).nonEmpty)
+  require(rawMatrix.nonEmpty && rawMatrix(0).nonEmpty, "Error - Input map should be at least 1x1")
 
   // Matrix dimensions
   val sizeM: Int = rawMatrix.size
@@ -49,23 +49,22 @@ class Board(rawMatrix: Vector[Vector[Char]]) extends LazyLogging {
   }
 
   def valiadteGameStatus(block: Block): Boolean = {
-    logger.debug(s"Validate game status: Block current $block, end field coordinates: ${endField.point}")
-    block.orientation == Orientation.Vertical && block.bricks.head == endField.point
+    val res: Boolean = block.orientation == Orientation.Vertical && block.bricks.head == endField.point
+    logger.debug(s"Validate game status: Block current $block, end field coordinates: ${endField.point} ==> $res")
+    res
   }
 
   def findPossiblePositions(b: Block): Set[Block] = {
-    val result = b.allPositions.filter(valiadteBlock(_))
-    logger.debug(s"         Possible positions for block: ${this} => ${result.mkString(" *** ")}")
-    result
+    b.allPositions.filter(valiadteBlock(_))
   }
 
   private def valiadteBlock(b: Block): Boolean = {
-    val innerMatch = b.orientation match {
-      case Orientation.Vertical => !getField(b.bricks.head).isInstanceOf[Empty] && !getField(b.bricks.head).isInstanceOf[Special]
-      case _                    => !b.bricks.exists(getField(_).isInstanceOf[Empty])
-    }
-    logger.debug(s"     Validating b: $b,")
-    if (b.bricks.forall(_.isValid((sizeM,sizeN)))) innerMatch else false
+    if (b.bricks.forall(_.isValid((sizeM,sizeN)))) innerMatch(b) else false
+  }
+
+  def innerMatch(b: Block) = b.orientation match {
+    case Orientation.Vertical => !getField(b.bricks.head).isInstanceOf[Empty] && !getField(b.bricks.head).isInstanceOf[Special]
+    case _                    => !b.bricks.exists(getField(_).isInstanceOf[Empty])
   }
 
   def getField(p: Point): Field = {
