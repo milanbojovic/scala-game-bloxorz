@@ -1,9 +1,9 @@
 package uk.org.bloxorz.game.map
 
 import com.typesafe.scalalogging.LazyLogging
-import uk.org.bloxorz.game.map.blocks.{Block, Direction, Orientation, Point}
+import uk.org.bloxorz.game.map.blocks.{Block, Point}
 import uk.org.bloxorz.game.map.fields._
-import uk.org.bloxorz.util.Util
+import uk.org.bloxorz._
 
 class Board(rawMatrix: Vector[Vector[Char]]) extends LazyLogging {
   logger.debug("Checking constraints and initializing board")
@@ -45,7 +45,7 @@ class Board(rawMatrix: Vector[Vector[Char]]) extends LazyLogging {
 
   def initializeFieldMatrix(vectorMatrix: Vector[Vector[Char]]) : Vector[Vector[Field]] = {
     logger.debug("Initializing fields matrix!")
-    Vector.tabulate(sizeM,sizeN){ (i,j) => Util.charToField(vectorMatrix(i)(j), new Point(i,j))}
+    Vector.tabulate(sizeM,sizeN){ (i,j) => charToField(vectorMatrix(i)(j), new Point(i,j))}
   }
 
   def valiadteGameStatus(block: Block): Boolean = {

@@ -4,10 +4,9 @@ import java.io.IOException
 
 import com.typesafe.scalalogging.LazyLogging
 import org.jline.terminal.TerminalBuilder
+import uk.org.bloxorz._
 import uk.org.bloxorz.console.Menu
 import uk.org.bloxorz.game.game.{AIDrivenGame, FileDrivenGame, HumanDrivenGame}
-import uk.org.bloxorz.game.map.blocks.Direction
-import uk.org.bloxorz.util.Util
 
 object Main extends LazyLogging {
 
@@ -28,7 +27,7 @@ object Main extends LazyLogging {
 
     try {
       while (run) {
-        Util.cls()
+        cls()
         println(menu)
         if (reader != null) {
           input = reader.read()

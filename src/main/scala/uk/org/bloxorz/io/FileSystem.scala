@@ -1,9 +1,9 @@
 package uk.org.bloxorz.io
 
 import java.io.{FileNotFoundException, IOException}
+import uk.org.bloxorz._
 
 import com.typesafe.scalalogging.LazyLogging
-import uk.org.bloxorz.game.map.blocks.Direction
 
 import scala.io.Source
 

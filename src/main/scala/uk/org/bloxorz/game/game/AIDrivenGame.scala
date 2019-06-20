@@ -2,8 +2,9 @@ package uk.org.bloxorz.game.game
 
 import com.typesafe.scalalogging.LazyLogging
 import uk.org.bloxorz.game.map.Board
-import uk.org.bloxorz.game.map.blocks.{Block, Direction, Orientation}
+import uk.org.bloxorz.game.map.blocks.Block
 import uk.org.bloxorz.io.FileSystem
+import uk.org.bloxorz._
 
 class AIDrivenGame(fileName: String, outputMoves: String) extends Game(fileName) with LazyLogging {
 
@@ -27,7 +28,6 @@ class AIDrivenGame(fileName: String, outputMoves: String) extends Game(fileName)
     val list = (new Block(Orientation.Vertical, board.endField.point :: Nil) :: movesList).reverse
     var currBlk = list.head
 
-
     for(move <- list.tail) {
       val found = currBlk.allPositions().zipWithIndex.filter(_._1 == move).head
       currBlk = found._1
@@ -35,7 +35,6 @@ class AIDrivenGame(fileName: String, outputMoves: String) extends Game(fileName)
     }
     resList
   }
-
 
   private def decodeDirection(num: Int): Direction.Value = num match {
     case 3 => Direction.RIGHT

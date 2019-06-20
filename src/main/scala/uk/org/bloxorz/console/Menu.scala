@@ -1,7 +1,8 @@
 package uk.org.bloxorz.console
 
 import com.typesafe.scalalogging.LazyLogging
-import uk.org.bloxorz.game.map.blocks.Direction
+
+import uk.org.bloxorz._
 
 class Menu extends LazyLogging {
     var menuSelection: Int = 1

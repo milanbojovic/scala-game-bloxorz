@@ -1,10 +1,9 @@
 package uk.org.bloxorz.game.game
 
 import com.typesafe.scalalogging.LazyLogging
+import uk.org.bloxorz._
 import uk.org.bloxorz.game.map.Board
-import uk.org.bloxorz.game.map.blocks.Direction
 import uk.org.bloxorz.io.FileSystem
-import uk.org.bloxorz.util.Util
 
 class FileDrivenGame(mapFile: String, movesFile: String) extends Game(mapFile) with LazyLogging {
 
@@ -24,7 +23,7 @@ class FileDrivenGame(mapFile: String, movesFile: String) extends Game(mapFile) w
 
     var gameControl: (Boolean, Boolean) = (true, true)
     for(move <- FileSystem.loadMoves(movesFile)) {
-      Util.cls()
+      cls()
       println(board)
       if (gameControl._1) {
         gameControl = board.moveBlock(keyDecoder(move.toInt))

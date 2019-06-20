@@ -4,10 +4,9 @@ import java.io.IOException
 
 import com.typesafe.scalalogging.LazyLogging
 import org.jline.terminal.TerminalBuilder
+import uk.org.bloxorz._
 import uk.org.bloxorz.game.map.Board
-import uk.org.bloxorz.game.map.blocks.Direction
 import uk.org.bloxorz.io.FileSystem
-import uk.org.bloxorz.util.Util
 
 class HumanDrivenGame(fileName: String) extends Game(fileName) with LazyLogging {
 
@@ -33,7 +32,7 @@ class HumanDrivenGame(fileName: String) extends Game(fileName) with LazyLogging 
 
     try {
       while (gameControl._1 && input != 81 && input != 113) {
-        Util.cls()
+        cls()
         println(board)
         input = reader.read()
         input match {

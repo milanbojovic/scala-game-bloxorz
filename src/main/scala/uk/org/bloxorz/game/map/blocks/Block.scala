@@ -2,6 +2,8 @@ package uk.org.bloxorz.game.map.blocks
 
 import com.typesafe.scalalogging.LazyLogging
 
+import uk.org.bloxorz._
+
 class Block(var orientation: Orientation.Value, var bricks: List[Point]) extends LazyLogging {
 
   def allPositions(): Set[Block] = {
