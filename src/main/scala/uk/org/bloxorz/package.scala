@@ -27,7 +27,6 @@ package object bloxorz extends LazyLogging{
     case PanelStart   => new Start(p)
     case PanelFinish  => new End(p)
     case PanelEmpty   => new Empty(p)
-    case Block        => new Blockk(p)
     case _ => {
       val errorMsg = s"Error: Invalid input file, bad character detected while parsing input file. Point $p, value: '$c'"
       print(errorMsg)
@@ -41,14 +40,4 @@ package object bloxorz extends LazyLogging{
     print("\u001b[2J")
 
   }
-
-
-
-
-
-
-
-
-
-
 }

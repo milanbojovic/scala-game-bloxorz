@@ -25,12 +25,11 @@ object FileSystem extends LazyLogging {
     case "r" | "R" | "\"r\"" | "\"R\"" =>  "67"
     case "l" | "L" | "\"l\"" | "\"L\"" =>  "68"
     case _ => throw new IOException(s"Invalid value detected while reading file. [$move.trim]")
-
   }
 
   def loadMoves(filename: String): List[String] = {
     try {
-      logger.debug(s"sLoading moves from file + $filename")
+      logger.debug(s"Loading moves from file + $filename")
       Source.fromFile(filename).getLines().toList.iterator.map(encodeMove(_)).toList
     } catch {
       case e: FileNotFoundException => logger.error(s"Couldn't find file [$filename]."); List[String]();
@@ -40,7 +39,7 @@ object FileSystem extends LazyLogging {
 
   def storeMoves(filename: String, moves: List[Direction.Value]) = {
     try {
-      logger.debug(s"sStoring moves to file + $filename")
+      logger.debug(s"Storing moves to file + $filename")
       //Source.fromFile(filename).getLines().toList.iterator.map(encodeMove(_)).toList
       reflect.io.File(filename).writeAll(moves.mkString("\n"))
     } catch {

@@ -18,6 +18,7 @@ class HumanDrivenGame(fileName: String) extends Game(fileName) with LazyLogging 
   }
 
   override def play(): Int = {
+    board.initializeBlockPosition()
     val terminal = TerminalBuilder.builder().jna(true).system(true).build()
     terminal.enterRawMode()
 

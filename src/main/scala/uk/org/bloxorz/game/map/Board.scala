@@ -10,6 +10,7 @@ class Board(rawMatrix: Vector[Vector[Char]]) extends LazyLogging {
 
   // Requirements 1
   require(rawMatrix.nonEmpty && rawMatrix(0).nonEmpty, "Error - Input map should be at least 1x1")
+  require(rawMatrix.forall(_.size == rawMatrix(0).size), "Error - each input file row has to me the same size")
 
   // Matrix dimensions
   val sizeM: Int = rawMatrix.size
@@ -31,7 +32,12 @@ class Board(rawMatrix: Vector[Vector[Char]]) extends LazyLogging {
   val endField    : End     = findEndFields.head.asInstanceOf[End]
 
   // Block
-  var block: Block = new Block(Orientation.Vertical, List(startField.point))
+  var block: Block = initializeBlockPosition()
+
+  def initializeBlockPosition(): Block = {
+    block = new Block(Orientation.Vertical, List(startField.point))
+    block
+  }
 
   // Method definitions
   def moveBlock(dir: Direction.Value): (Boolean,Boolean) = {

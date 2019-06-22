@@ -8,30 +8,39 @@ import uk.org.bloxorz._
 
 class AIDrivenGame(fileName: String, outputMoves: String) extends Game(fileName) with LazyLogging {
 
+  var solutions: List[Block] = Nil
+
   override def initializeBoard: Board = {
     logger.debug("Initializing game")
     new Board(FileSystem.loadMap(fileName))
   }
 
   override def play(): Int = {
-
-    val pathHist: List[Block] = findSolution(board.block, Nil)
-    val res: List[Direction.Value] = translateToMoves(pathHist).reverse
-    println(res.mkString(" => "))
-    logger.debug(res.mkString(" => "))
+    board.initializeBlockPosition()
+    solutions = Nil
+    findSolutions(board.block, Nil)
+    val res: List[Direction.Value] = translateToMoves(solutions.reverse).reverse
+    println(res.mkString("GAME RESULT: ", " => ", ""))
+    logger.debug(res.mkString("GAME RESULT: ", " => ", ""))
     FileSystem.storeMoves(outputMoves, res)
     1
   }
 
   def translateToMoves(movesList: List[Block]): List[Direction.Value] = {
     var resList: List[Direction.Value] = Nil
-    val list = (new Block(Orientation.Vertical, board.endField.point :: Nil) :: movesList).reverse
-    var currBlk = list.head
 
-    for(move <- list.tail) {
-      val found = currBlk.allPositions().zipWithIndex.filter(_._1 == move).head
-      currBlk = found._1
-      resList = decodeDirection(found._2) :: resList
+    if(movesList.nonEmpty) {
+      var currBlk = movesList.head
+      if (movesList.tail.nonEmpty) {
+        for(move <- movesList.tail) {
+          val svePozicije = currBlk.allPositions()
+          val svePozicijeZipped = svePozicije.zipWithIndex
+            val nadjenaPozicija: Set[(Block, Int)] = svePozicijeZipped.filter(_._1 == move)
+          val playedMove = nadjenaPozicija.head
+          currBlk = playedMove._1
+          resList = decodeDirection(playedMove._2) :: resList
+        }
+      }
     }
     resList
   }
@@ -43,19 +52,25 @@ class AIDrivenGame(fileName: String, outputMoves: String) extends Game(fileName)
     case 0 => Direction.UP
   }
 
-  def findSolution(curr: Block, pathHist: List[Block]): List[Block] = {
-    val fpp = excludeVisited(board.findPossiblePositions(curr), pathHist)
+  def findSolutions(curr: Block, pathHist: List[Block]): Unit= {
     val gs = board.valiadteGameStatus(curr)
+    val fpp = excludeVisited((board.findPossiblePositions(curr)), pathHist)
+
     if(gs || fpp.isEmpty) {
-      if (gs) { logger.info(s"Success Game finished: $pathHist")}
-      pathHist
+      if (gs) {
+        if (solutions.isEmpty) {
+          solutions = (curr :: pathHist)
+        } else if (solutions.size > pathHist.size + 1) {
+          solutions = (curr :: pathHist)
+        }
+      }
     } else {
       logger.debug(s"         Possible positions for block: $curr => ${fpp.mkString(" *** ")}")
-      findSolution(fpp.toList.head, curr :: pathHist)
+      fpp.foreach(findSolutions(_, curr :: pathHist))
     }
   }
 
-  def excludeVisited(set: Set[Block], list: List[Block]): Set[Block] = {
-    if(list.isEmpty) set else set.-(list.head)
+  def excludeVisited(possib: Set[Block], visited: List[Block]): Set[Block] = {
+    if(visited.isEmpty) possib else possib.filter(!visited.contains(_))
   }
 }

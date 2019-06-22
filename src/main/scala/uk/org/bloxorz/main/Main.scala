@@ -41,7 +41,7 @@ object Main extends LazyLogging {
               case 3 => fileDriven.play()
               case 4 => aiDriven.play()
               case 6 => run = false
-              case _ => logger.debug("Unknowg menu selection item !!!")
+              case _ => logger.debug("Unknown menu selection item !!!")
             }
             case unknown => logger.debug(s"you pressed a unsupported key $unknown")
           }

@@ -18,6 +18,8 @@ class FileDrivenGame(mapFile: String, movesFile: String) extends Game(mapFile) w
     logger.debug(this + " started:")
     println(this + " started")
 
+    board.initializeBlockPosition()
+
     println(this)
     Thread.sleep(WaitTimeout)
 

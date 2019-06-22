@@ -1,7 +1,7 @@
 package uk.org.bloxorz
 
 import org.scalatest.FunSuite
-import uk.org.bloxorz.game.map.blocks.{Block, Orientation, Point}
+import uk.org.bloxorz.game.map.blocks.{Block, Point}
 
 class BlockTest extends FunSuite{
 
