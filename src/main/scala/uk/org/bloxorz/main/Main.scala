@@ -13,11 +13,11 @@ object Main extends LazyLogging {
   def main(args: Array[String]): Unit = {
     logger.info("Program Bloxorz started")
 
-    val menu = new Menu
+    val inputMap: String = "src/main/resources/input_map.txt"
+    val inputMoves: String = "src/main/resources/input_moves_sequence.txt"
+    val outputMoves: String = "src/main/resources/output_moves_sequence.txt"
 
-    val humenDriven = new HumanDrivenGame("src/main/resources/input_map.txt")
-    val fileDriven  = new FileDrivenGame("src/main/resources/input_map.txt", "src/main/resources/input_moves_sequence.txt")
-    val aiDriven = new AIDrivenGame("src/main/resources/input_map.txt", "src/main/resources/output_moves_sequence.txt")
+    val menu = new Menu
 
     val terminal = TerminalBuilder.builder().jna(true).system(true).build()
     terminal.enterRawMode()
@@ -37,9 +37,18 @@ object Main extends LazyLogging {
             case 115 | 83 =>
               menu.changeSelection(Direction.DOWN)
             case 13 | 101 => menu.menuSelection match {
-              case 2 => humenDriven.play()
-              case 3 => fileDriven.play()
-              case 4 => aiDriven.play()
+              case 2 => {
+                  val humenDriven = new HumanDrivenGame(inputMap)
+                  humenDriven.play()
+                }
+              case 3 => {
+                val fileDriven  = new FileDrivenGame(inputMap, inputMoves)
+                fileDriven.play()
+              }
+              case 4 => {
+                val aiDriven = new AIDrivenGame(inputMap, outputMoves)
+                aiDriven.play()
+              }
               case 6 => run = false
               case _ => logger.debug("Unknown menu selection item !!!")
             }

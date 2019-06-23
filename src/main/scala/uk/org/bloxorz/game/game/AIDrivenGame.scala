@@ -8,7 +8,7 @@ import uk.org.bloxorz._
 
 class AIDrivenGame(fileName: String, outputMoves: String) extends Game(fileName) with LazyLogging {
 
-  var solutions: List[Block] = Nil
+  var solution: List[Block] = Nil
 
   override def initializeBoard: Board = {
     logger.debug("Initializing game")
@@ -17,9 +17,9 @@ class AIDrivenGame(fileName: String, outputMoves: String) extends Game(fileName)
 
   override def play(): Int = {
     board.initializeBlockPosition()
-    solutions = Nil
+    solution = Nil
     findSolutions(board.block, Nil)
-    val res: List[Direction.Value] = translateToMoves(solutions.reverse).reverse
+    val res: List[Direction.Value] = translateToMoves(solution.reverse).reverse
     println(res.mkString("GAME RESULT: ", " => ", ""))
     logger.debug(res.mkString("GAME RESULT: ", " => ", ""))
     FileSystem.storeMoves(outputMoves, res)
@@ -58,15 +58,19 @@ class AIDrivenGame(fileName: String, outputMoves: String) extends Game(fileName)
 
     if(gs || fpp.isEmpty) {
       if (gs) {
-        if (solutions.isEmpty) {
-          solutions = (curr :: pathHist)
-        } else if (solutions.size > pathHist.size + 1) {
-          solutions = (curr :: pathHist)
+        logger.debug(s"Solution found: ${curr :: pathHist}")
+        if (solution.isEmpty) {
+          solution = (curr :: pathHist)
+        } else if (solution.size > pathHist.size + 1) {
+          solution = (curr :: pathHist)
         }
       }
     } else {
       logger.debug(s"         Possible positions for block: $curr => ${fpp.mkString(" *** ")}")
-      fpp.foreach(findSolutions(_, curr :: pathHist))
+      if (solution.isEmpty) fpp.foreach(findSolutions(_, curr :: pathHist))
+      if (solution.nonEmpty && solution.size > pathHist.size + 1) {
+        fpp.foreach(findSolutions(_, curr :: pathHist))
+      }
     }
   }
 
