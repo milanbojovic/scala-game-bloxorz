@@ -27,7 +27,7 @@ There are three possible modes to play the game:
 
 
  1. **Manual play** (block is moved through the board using arrow keys: <kbd>&#8593;</kbd>, <kbd>&#8595;</kbd>, <kbd>&#8592;</kbd>, <kbd>&#8594;</kbd> or <kbd>W</kbd>, <kbd>S</kbd>, <kbd>A</kbd>, <kbd>D</kbd>).
- 2. **Automatic play** (moves are loaded from file *"input_moves_sequence.txt"* structure of the file should be one character represending direction per line allowed characters: *u, d, l, r*).
+ 2. **Automatic play** (moves are loaded from file *"input_moves_sequence.txt"* structure of the file should be one character representing direction per line allowed characters: *u, d, l, r*).
  3. **Solution finder** (game will find the best solution for moving the block from starting to target position and results will be put to file *"output_moves_sequence.txt"*).
 
 
@@ -37,5 +37,5 @@ There are three possible modes to play the game:
  1. Clone github repository
  2. cd scala-game-bloxorz
  3. sbt run
- 4. Use: w, s, a, d keys to select meny option and press enter
+ 4. Use: w, s, a, d keys to select menu option and press enter
 
