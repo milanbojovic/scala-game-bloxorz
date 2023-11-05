@@ -1,4 +1,4 @@
-# **Functional programming game development assignment**
+# **Functional programming console game development assignment**
 
 ----------
 
